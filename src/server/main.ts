@@ -1,10 +1,17 @@
+import express from 'express';
 import fetch from 'node-fetch'
-import express from 'express'
+import path from 'path';
+import { pagesRouter } from './routes/pages-router';
+import { staticsRouter } from './routes/statics-router';
+import * as config from './config';
 
-const app = express()
-const PORT = 3000
+console.log(`*******************************************`);
+console.log(`NODE_ENV: ${process.env.NODE_ENV}`);
+console.log(`config: ${JSON.stringify(config, null, 2)}`);
+console.log(`*******************************************`);
 
-app.use(express.static('./static'))
+const app = express();
+app.set('view engine', 'ejs');
 
 app.get('/search', async (req, res) => {
   const { term } = req.query
@@ -15,6 +22,10 @@ app.get('/search', async (req, res) => {
   res.json({ status: 'ok', json }).end()
 })
 
-app.listen(PORT)
+app.use('/assets', express.static(path.join(process.cwd(), 'assets')));
+app.use(staticsRouter());
+app.use(pagesRouter());
 
-console.log(`Running on http://localhost:${PORT}`)
+app.listen(config.SERVER_PORT, () => {
+  console.log(`App listening on port ${config.SERVER_PORT}!`);
+});
