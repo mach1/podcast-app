@@ -11,7 +11,6 @@ app.get('/search', async (req, res) => {
   const result = await fetch(`https://itunes.apple.com/search?term=${term}`)
 
   const json = await result.json()
-  console.log(json)
 
   res.json({ status: 'ok', json }).end()
 })
