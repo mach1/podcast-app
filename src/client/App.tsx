@@ -1,6 +1,6 @@
 import * as React from 'react'
 
-export const App: React.FC<void> = () => {
+export const App: React.FC = () => {
   const [search, setSearch] = React.useState('')
   const [result, setResult] = React.useState('')
 
