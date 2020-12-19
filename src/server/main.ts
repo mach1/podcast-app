@@ -1,9 +1,9 @@
 import express from 'express'
 import fetch from 'node-fetch'
-import path from 'path'
-import { pagesRouter } from './routes/pages-router'
-import { staticsRouter } from './routes/statics-router'
 import * as config from './config'
+import webpackConfig from '../../webpack.config'
+import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpack from 'webpack'
 
 console.log(`*******************************************`)
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
@@ -11,6 +11,8 @@ console.log(`config: ${JSON.stringify(config, null, 2)}`)
 console.log(`*******************************************`)
 
 const app = express()
+const compiler = webpack(webpackConfig)
+
 app.set('view engine', 'ejs')
 
 app.get('/search', async (req, res) => {
@@ -22,9 +24,13 @@ app.get('/search', async (req, res) => {
   res.json({ status: 'ok', json }).end()
 })
 
-app.use('/assets', express.static(path.join(process.cwd(), 'assets')))
-app.use(staticsRouter())
-app.use(pagesRouter())
+if (config.IS_DEV && webpackConfig.output) {
+  app.use(
+    webpackDevMiddleware(compiler, {
+      publicPath: '/',
+    }),
+  )
+}
 
 app.listen(config.SERVER_PORT, () => {
   console.log(`App listening on port ${config.SERVER_PORT}!`)

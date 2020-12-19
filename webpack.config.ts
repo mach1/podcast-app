@@ -1,7 +1,8 @@
 import path from 'path'
 import { Configuration } from 'webpack'
-import { WebpackManifestPlugin } from 'webpack-manifest-plugin'
 import { SERVER_PORT, IS_DEV, WEBPACK_PORT } from './src/server/config'
+import HTMLWebpackPlugin from 'html-webpack-plugin'
+import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 
 const nodeModulesPath = path.resolve(__dirname, 'node_modules')
 const targets = IS_DEV ? { chrome: '79', firefox: '72' } : '> 0.25%, not dead'
@@ -13,26 +14,12 @@ const config: Configuration = {
     index: './src/client/client',
   },
   output: {
+    filename: `[name].bundle.js`,
     path: path.join(__dirname, 'dist', 'statics'),
-    filename: `[name]-[hash:8]-bundle.js`,
-    chunkFilename: '[name]-[hash:8]-bundle.js',
-    publicPath: '/statics/',
+    publicPath: '/',
   },
   resolve: {
     extensions: ['.js', '.ts', '.tsx'],
-  },
-  optimization: {
-    minimize: !IS_DEV,
-    splitChunks: {
-      cacheGroups: {
-        vendors: {
-          test: /[\\/]node_modules[\\/]/,
-          name: 'vendors',
-          chunks: 'all',
-          priority: 10,
-        },
-      },
-    },
   },
   module: {
     rules: [
@@ -59,7 +46,10 @@ const config: Configuration = {
     open: IS_DEV,
     openPage: `http://localhost:${SERVER_PORT}`,
   },
-  plugins: [new WebpackManifestPlugin()],
+  plugins: [
+    new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
+    new HTMLWebpackPlugin({ template: path.resolve('src', 'client', 'index.html') }),
+  ],
 }
 
 export default config
