@@ -3,12 +3,12 @@ import express from 'express'
 import { Router } from 'express'
 import { IS_DEV, WEBPACK_PORT } from '../config'
 
-export function staticsRouter() {
+export function staticsRouter(): Router {
   const router = Router()
 
   if (IS_DEV) {
-    const { createProxyMiddleware } = require('http-proxy-middleware')
     // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const { createProxyMiddleware } = require('http-proxy-middleware')
     // All the assets are hosted by Webpack on localhost:${config.WEBPACK_PORT} (Webpack-dev-server)
     router.use(
       '/statics',
