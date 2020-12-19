@@ -16,7 +16,7 @@ export const App = () => {
 
   return (
     <div>
-      <input type="text" placeholder="Search" onChange={onChange} />
+      <input type='text' placeholder='Search' onChange={onChange} />
       <button onClick={onClickSearch}>Search</button>
       <pre>
         <code>{result}</code>

@@ -3,7 +3,7 @@
 
   "compilerOptions": {
     "preserveConstEnums": true,
-    "outDir": "../../dist/server",
+    "outDir": "../../dist/server"
   },
 
   "include": ["**/*.ts"],

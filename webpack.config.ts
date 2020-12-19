@@ -59,9 +59,7 @@ const config: Configuration = {
     open: IS_DEV,
     openPage: `http://localhost:${SERVER_PORT}`,
   },
-  plugins: [
-    new WebpackManifestPlugin()
-  ],
+  plugins: [new WebpackManifestPlugin()],
 }
 
 export default config
