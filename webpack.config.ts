@@ -3,6 +3,7 @@ import { Configuration } from 'webpack'
 import { SERVER_PORT, IS_DEV, WEBPACK_PORT } from './src/server/config'
 import HTMLWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+import 'webpack-dev-server'
 
 const nodeModulesPath = path.resolve(__dirname, 'node_modules')
 const targets = IS_DEV ? { chrome: '79', firefox: '72' } : '> 0.25%, not dead'
