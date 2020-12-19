@@ -18,6 +18,6 @@
     "composite": true,
   },
   "extends": "./tsconfig.json",
-  "exclude": ["dist", "src/client", "**/*.test.ts"],
+  "exclude": ["dist", "types", "src/client", "**/*.test.ts"],
 }
 

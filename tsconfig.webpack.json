@@ -16,5 +16,5 @@
     "composite": true,
   },
   "extends": "./tsconfig.json",
-  "exclude": ["dist", "src/server", "**/*.test.tsx"],
+  "exclude": ["dist", "types", "src/server", "**/*.test.tsx"],
 }

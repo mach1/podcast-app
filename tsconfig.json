@@ -12,7 +12,8 @@
     "outDir": "../../dist/shared",
     "lib": ["ES2019"],
     "composite": true,
-    "baseUrl": "./"
+    "baseUrl": "./",
+    "typeRoots": ["./node_modules/@types", "types"],
   },
-  "include": ["**/*.ts"],
+  "include": ["**/*.ts", "**/*.d.ts"],
 }
