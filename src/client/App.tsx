@@ -18,7 +18,7 @@ export const App: React.FC = () => {
       json: { results },
     } = response
     setResults(results)
-  }, 200)
+  }, 1000)
 
   return (
     <MuiThemeProvider theme={theme}>
