@@ -10,10 +10,9 @@
     "allowSyntheticDefaultImports": true,
     "isolatedModules": true,
     "outDir": "../../dist/shared",
-    "lib": ["ES2019"],
+    "lib": ["ES2019", "DOM"],
     "composite": true,
     "baseUrl": "./",
-    "typeRoots": ["./node_modules/@types", "types"],
+    "jsx": "react",
   },
-  "include": ["**/*.ts", "**/*.d.ts"],
 }
