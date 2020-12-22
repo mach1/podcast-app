@@ -4,6 +4,7 @@ import * as config from './config'
 import webpackConfig from '../../webpack.config'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpack from 'webpack'
+import { getSearchString } from '../utils'
 
 console.log(`*******************************************`)
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`)
@@ -16,8 +17,7 @@ const compiler = webpack(webpackConfig)
 app.set('view engine', 'ejs')
 
 app.get('/search', async (req, res) => {
-  const { term } = req.query
-  const result = await fetch(`https://itunes.apple.com/search?term=${term}`)
+  const result = await fetch(`https://itunes.apple.com/search?${getSearchString(req.query)}`)
 
   const json = await result.json()
 

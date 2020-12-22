@@ -13,7 +13,7 @@ export const App: React.FC = () => {
   const [results, setResults] = React.useState([])
 
   const onSearchChange = debounce(async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const response = await fetchSearchResults(encodeURIComponent(event.target.value))
+    const response = await fetchSearchResults({ term: event.target.value, media: 'podcast' })
     const {
       json: { results },
     } = response

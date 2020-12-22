@@ -1,3 +1,5 @@
+import { getSearchString } from '../utils'
+
 export interface SearchResult {
   artistId: 17895151
   artistName: string
@@ -41,8 +43,24 @@ export interface SearchResults {
     results: SearchResult[]
   }
 }
-export const fetchSearchResults = async (term: string): Promise<SearchResults> => {
-  const response = await fetch('/search?term=' + encodeURIComponent(term))
+
+export interface SearchOptions {
+  term: string
+  media?:
+    | 'movie'
+    | 'podcast'
+    | 'music'
+    | 'musicVideo'
+    | 'audiobook'
+    | 'shortFilm'
+    | 'tvShow'
+    | 'software'
+    | 'ebook'
+    | 'all'
+}
+
+export const fetchSearchResults = async (options: SearchOptions): Promise<SearchResults> => {
+  const response = await fetch(`/search?${getSearchString(options)}`)
   const json = await response.json()
   return json
 }
