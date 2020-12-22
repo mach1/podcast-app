@@ -1,6 +1,6 @@
 import { getSearchString } from '../utils'
 
-export interface SearchResult {
+export interface ApiSearchResult {
   artistId: 17895151
   artistName: string
   artistViewUrl: string
@@ -36,15 +36,15 @@ export interface SearchResult {
   wrapperType: string
 }
 
-export interface SearchResults {
+export interface ApiSearchResults {
   status: string
   json: {
     resultCount: number
-    results: SearchResult[]
+    results: ApiSearchResult[]
   }
 }
 
-export interface SearchOptions {
+export interface ApiSearchOptions {
   term: string
   media?:
     | 'movie'
@@ -59,7 +59,7 @@ export interface SearchOptions {
     | 'all'
 }
 
-export const fetchSearchResults = async (options: SearchOptions): Promise<SearchResults> => {
+export const fetchSearchResults = async (options: ApiSearchOptions): Promise<ApiSearchResults> => {
   const response = await fetch(`/search?${getSearchString(options)}`)
   const json = await response.json()
   return json

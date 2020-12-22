@@ -4,7 +4,7 @@ import { Container } from '@material-ui/core'
 import { createMuiTheme, ThemeProvider as MuiThemeProvider } from '@material-ui/core/styles'
 import { ThemeProvider } from '@emotion/react'
 import TopBar from './TopBar'
-import SearchResults from './SearchResults'
+import SearchResults from './Search/SearchResults'
 import { fetchSearchResults } from './api'
 
 const theme = createMuiTheme()
