@@ -1,6 +1,6 @@
 import styled from '@emotion/styled'
 import * as React from 'react'
-import { ApiSearchResult } from '../api'
+import { ApiSearchResult } from '../../types'
 import { Grid } from '@material-ui/core'
 import SearchResult from './SearchResult'
 

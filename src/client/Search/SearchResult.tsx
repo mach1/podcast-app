@@ -1,15 +1,21 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 import { Card, CardMedia, CardContent, Typography } from '@material-ui/core'
-import { ApiSearchResult } from '../api'
+import { ApiSearchResult } from '../../types'
+import { fetchFeed } from '../api'
 
 interface Props {
   searchResult: ApiSearchResult
 }
 
 const SearchResult = ({ searchResult }: Props): React.ReactElement => {
+  const onClick = async () => {
+    const response = await fetchFeed({ feedUrl: searchResult.feedUrl })
+    console.log(response)
+  }
+
   return (
-    <EnhancedCard>
+    <EnhancedCard onClick={onClick}>
       <EnhancedCardMedia image={searchResult.artworkUrl100} />
       <ContentContainer>
         <EnhancedCardContent>
