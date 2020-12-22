@@ -16,7 +16,8 @@ const SearchResults = ({ results }: Props): React.ReactElement => {
               <EnhancedCardMedia image={result.artworkUrl100} />
               <ContentContainer>
                 <EnhancedCardContent>
-                  <Typography component='h2'>{result.artistName}</Typography>
+                  <Typography variant='h5'>{result.collectionName}</Typography>
+                  <Typography variant='subtitle1'>{result.artistName}</Typography>
                 </EnhancedCardContent>
               </ContentContainer>
             </EnhancedCard>
