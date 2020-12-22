@@ -150,3 +150,11 @@ export interface ApiSearchOptions {
     | 'ebook'
     | 'all'
 }
+
+export interface ApiLookupResults {
+  resultCount: number
+  results: ApiSearchResult[]
+}
+export interface ApiFetchByIdOptions {
+  id: number
+}

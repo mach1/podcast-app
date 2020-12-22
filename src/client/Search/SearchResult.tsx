@@ -1,8 +1,9 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
-import { Card, CardMedia, CardContent, Typography } from '@material-ui/core'
+import { Card, CardMedia, CardContent, CardActionArea, Typography } from '@material-ui/core'
 import { ApiSearchResult } from '../../types'
 import { fetchFeed } from '../api'
+import { Link } from 'react-router-dom'
 
 interface Props {
   searchResult: ApiSearchResult
@@ -17,12 +18,16 @@ const SearchResult = ({ searchResult }: Props): React.ReactElement => {
   return (
     <EnhancedCard onClick={onClick}>
       <EnhancedCardMedia image={searchResult.artworkUrl100} />
-      <ContentContainer>
-        <EnhancedCardContent>
-          <Typography variant='h5'>{searchResult.collectionName}</Typography>
-          <Typography variant='subtitle1'>{searchResult.artistName}</Typography>
-        </EnhancedCardContent>
-      </ContentContainer>
+      <CardActionArea>
+        <Link to={`/feed/${searchResult.collectionId}`}>
+          <ContentContainer>
+            <EnhancedCardContent>
+              <Typography variant='h5'>{searchResult.collectionName}</Typography>
+              <Typography variant='subtitle1'>{searchResult.artistName}</Typography>
+            </EnhancedCardContent>
+          </ContentContainer>
+        </Link>
+      </CardActionArea>
     </EnhancedCard>
   )
 }
@@ -35,6 +40,7 @@ const EnhancedCard = styled(Card)`
 const EnhancedCardMedia = styled(CardMedia)`
   width: 100px;
   height: 100px;
+  flex-shrink: 0;
 `
 
 const ContentContainer = styled.div`

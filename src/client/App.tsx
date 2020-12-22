@@ -7,6 +7,7 @@ import TopBar from './TopBar'
 import SearchResults from './Search/SearchResults'
 import { fetchSearchResults } from './api'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Feed from './Feed/Feed'
 
 const theme = createMuiTheme()
 
@@ -36,6 +37,9 @@ export const App: React.FC = () => {
           <TopBar onSearchChange={onSearchChange} />
           <Router>
             <Switch>
+              <Route path='/feed/:feedId'>
+                <Feed />
+              </Route>
               <Route path='/'>
                 <SearchResults results={results} />
               </Route>

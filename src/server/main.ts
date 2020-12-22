@@ -69,6 +69,13 @@ if (config.IS_DEV && webpackConfig.output) {
   )
 }
 
+app.get('/lookup', async function (req, res) {
+  const response = await fetch(`https://itunes.apple.com/lookup?${getSearchString(req.query)}`)
+  const json = await response.json()
+  res.setHeader('Content-Type', 'application/json')
+  res.send(json)
+})
+
 app.listen(config.SERVER_PORT, () => {
   console.log(`App listening on port ${config.SERVER_PORT}!`)
 })
