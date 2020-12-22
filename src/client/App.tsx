@@ -6,6 +6,7 @@ import { ThemeProvider } from '@emotion/react'
 import TopBar from './TopBar'
 import SearchResults from './Search/SearchResults'
 import { fetchSearchResults } from './api'
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 
 const theme = createMuiTheme()
 
@@ -25,7 +26,13 @@ export const App: React.FC = () => {
       <ThemeProvider theme={theme}>
         <Container>
           <TopBar onSearchChange={onSearchChange} />
-          <SearchResults results={results} />
+          <Router>
+            <Switch>
+              <Route path='/'>
+                <SearchResults results={results} />
+              </Route>
+            </Switch>
+          </Router>
         </Container>
       </ThemeProvider>
     </MuiThemeProvider>
