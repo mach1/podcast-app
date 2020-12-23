@@ -10,6 +10,8 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Feed from './Feed/Feed'
 import styled from '@emotion/styled'
 import { ApiSearchResult } from 'dist/server/src/types'
+import Player from './Player/Player'
+import { MediaProvider } from './Player/mediaContext'
 
 const theme = createMuiTheme()
 
@@ -45,18 +47,21 @@ export const App: React.FC = () => {
             `}
           />
           <TopBar onSearchChange={onSearchChange} />
-          <EnhancedContainer>
-            <Router>
-              <Switch>
-                <Route path='/feed/:feedId'>
-                  <Feed />
-                </Route>
-                <Route path='/'>
-                  <SearchResults results={results} />
-                </Route>
-              </Switch>
-            </Router>
-          </EnhancedContainer>
+          <MediaProvider>
+            <Player />
+            <EnhancedContainer>
+              <Router>
+                <Switch>
+                  <Route path='/feed/:feedId'>
+                    <Feed />
+                  </Route>
+                  <Route path='/'>
+                    <SearchResults results={results} />
+                  </Route>
+                </Switch>
+              </Router>
+            </EnhancedContainer>
+          </MediaProvider>
         </StylesProvider>
       </ThemeProvider>
     </MuiThemeProvider>

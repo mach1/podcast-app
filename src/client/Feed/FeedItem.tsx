@@ -3,6 +3,7 @@ import { PodcastEpisode, ApiSearchResult } from '../../types'
 import { ListItem, ListItemText, Typography, Divider, Avatar, ListItemAvatar, IconButton } from '@material-ui/core'
 import { PlayArrow } from '@material-ui/icons'
 import styled from '@emotion/styled'
+import { useMedia } from '../Player/mediaContext'
 
 type Props = {
   collection: ApiSearchResult | null
@@ -10,10 +11,11 @@ type Props = {
 }
 
 const FeedItem: React.FC<Props> = ({ item, collection }) => {
+  const { setMedia } = useMedia()
   const { data } = item
   const description = data.description.replace(/<(.|\n)*?>/g, '')
   const onClickPlay = () => {
-    console.log('play')
+    setMedia(item)
   }
 
   if (!collection) return null
