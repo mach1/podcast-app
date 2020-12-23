@@ -87,6 +87,11 @@ export interface ApiFeedResponse {
   }[]
 }
 
+export interface PodcastEpisode {
+  meta: ApiFeedResponse['meta']
+  data: ApiFeedResponse['items'][0]
+}
+
 export interface ApiFetchFeedOptions {
   feedUrl: string
 }
