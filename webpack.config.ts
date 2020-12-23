@@ -1,8 +1,9 @@
 import path from 'path'
-import { Configuration } from 'webpack'
+import webpack, { Configuration } from 'webpack'
 import { SERVER_PORT, IS_DEV, WEBPACK_PORT } from './src/server/config'
 import HTMLWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
+import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
 import 'webpack-dev-server'
 
 const nodeModulesPath = path.resolve(__dirname, 'node_modules')
@@ -31,7 +32,7 @@ const config: Configuration = {
           loader: 'babel-loader',
           options: {
             presets: [['@babel/env', { modules: false, targets }], '@babel/react', '@babel/typescript'],
-            plugins: [],
+            plugins: [IS_DEV && require.resolve('react-refresh/babel')].filter(Boolean),
           },
         },
       },
@@ -48,6 +49,13 @@ const config: Configuration = {
     openPage: `http://localhost:${SERVER_PORT}`,
   },
   plugins: [
+    IS_DEV && new webpack.HotModuleReplacementPlugin(),
+    IS_DEV &&
+      new ReactRefreshWebpackPlugin({
+        overlay: {
+          sockIntegration: 'whm',
+        },
+      }),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HTMLWebpackPlugin({ template: path.resolve('src', 'client', 'index.html') }),
   ],

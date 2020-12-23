@@ -3,6 +3,7 @@ import fetch from 'node-fetch'
 import * as config from './config'
 import webpackConfig from '../../webpack.config'
 import webpackDevMiddleware from 'webpack-dev-middleware'
+import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpack from 'webpack'
 import { getSearchString } from '../utils'
 import xml2js from 'xml2js'
@@ -65,6 +66,14 @@ if (config.IS_DEV && webpackConfig.output) {
   app.use(
     webpackDevMiddleware(compiler, {
       publicPath: '/',
+    }),
+  )
+
+  app.use(
+    webpackHotMiddleware(compiler, {
+      log: false,
+      path: `/__webpack_hmr`,
+      heartbeat: 10 * 1000,
     }),
   )
 }
