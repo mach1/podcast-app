@@ -1,7 +1,17 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
 import { fetchCollectionById, fetchFeed } from '../api'
-import { List, ListItem, ListItemText, Typography, Divider, Avatar, ListItemAvatar } from '@material-ui/core'
+import {
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
+  Divider,
+  Avatar,
+  ListItemAvatar,
+  IconButton,
+} from '@material-ui/core'
+import { PlayArrow } from '@material-ui/icons'
 import { ApiFeedResponse, ApiSearchResult } from 'src/types'
 import styled from '@emotion/styled'
 
@@ -34,7 +44,7 @@ const Feed = (): React.ReactElement => {
         const description = feedItem.description.replace(/<(.|\n)*?>/g, '')
         return (
           <React.Fragment key={i}>
-            <ListItem>
+            <EnhancedListItem button>
               <ListItemAvatar>
                 <Avatar variant='square' src={collection.artworkUrl100} />
               </ListItemAvatar>
@@ -42,7 +52,10 @@ const Feed = (): React.ReactElement => {
                 primary={feedItem.title}
                 secondary={<Typography variant='body2'>{description}</Typography>}
               />
-            </ListItem>
+              <EnhancedIconButton>
+                <EnhancedPlayArrow />
+              </EnhancedIconButton>
+            </EnhancedListItem>
             <Divider variant='inset' component='li' />
           </React.Fragment>
         )
@@ -50,6 +63,24 @@ const Feed = (): React.ReactElement => {
     </EnhancedList>
   )
 }
+
+const EnhancedPlayArrow = styled(PlayArrow)`
+  display: none;
+  width: 20px;
+  height: 20px;
+`
+
+const EnhancedListItem = styled(ListItem)`
+  &:hover ${EnhancedPlayArrow} {
+    display: block;
+  }
+`
+
+const EnhancedIconButton = styled(IconButton)`
+  flex-shrink: 0;
+  width: 40px;
+  height: 40px;
+`
 
 const EnhancedList = styled(List)`
   background-color: ${({ theme }) => theme.palette.background.paper};
