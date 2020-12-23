@@ -32,7 +32,7 @@ const config: Configuration = {
           loader: 'babel-loader',
           options: {
             presets: [['@babel/env', { modules: false, targets }], '@babel/react', '@babel/typescript'],
-            plugins: [IS_DEV && require.resolve('react-refresh/babel')].filter(Boolean),
+            plugins: [IS_DEV && require.resolve('react-refresh/babel'), '@emotion'].filter(Boolean),
           },
         },
       },
