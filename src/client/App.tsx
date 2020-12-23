@@ -27,6 +27,14 @@ export const App: React.FC = () => {
       <ThemeProvider theme={theme}>
         <Global
           styles={css`
+            html,
+            body {
+              margin: 0 !important;
+              padding: 0 !important;
+            }
+            h1 {
+              margin-top: 0;
+            }
             a {
               color: inherit;
               text-decoration: inherit;
