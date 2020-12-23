@@ -12,7 +12,7 @@ interface Props {
 const TopBar = ({ onSearchChange }: Props): React.ReactElement => {
   return (
     <AppBarContainer>
-      <AppBar position='static'>
+      <AppBar position='fixed'>
         <EnhancedToolbar>
           <Title>Podcasts</Title>
           <SearchContainer>
