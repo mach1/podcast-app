@@ -92,7 +92,7 @@ export interface PodcastEpisode {
   data: ApiFeedResponse['items'][0]
 }
 
-export interface ApiFetchFeedOptions {
+export type ApiFetchFeedOptions = {
   feedUrl: string
 }
 
@@ -141,9 +141,9 @@ export interface ApiSearchResults {
   }
 }
 
-export interface ApiSearchOptions {
+export type ApiSearchOptions = {
   term: string
-  media?:
+  media:
     | 'movie'
     | 'podcast'
     | 'music'
@@ -160,6 +160,6 @@ export interface ApiLookupResults {
   resultCount: number
   results: ApiSearchResult[]
 }
-export interface ApiFetchByIdOptions {
-  id: number
+export type ApiFetchByIdOptions = {
+  id: string
 }

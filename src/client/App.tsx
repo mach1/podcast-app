@@ -9,11 +9,12 @@ import { fetchSearchResults } from './api'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Feed from './Feed/Feed'
 import styled from '@emotion/styled'
+import { ApiSearchResult } from 'dist/server/src/types'
 
 const theme = createMuiTheme()
 
 export const App: React.FC = () => {
-  const [results, setResults] = React.useState([])
+  const [results, setResults] = React.useState<ApiSearchResult[]>([])
 
   const onSearchChange = debounce(async (event: React.ChangeEvent<HTMLInputElement>) => {
     const response = await fetchSearchResults({ term: event.target.value, media: 'podcast' })

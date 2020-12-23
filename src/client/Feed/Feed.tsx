@@ -6,7 +6,7 @@ import { ApiFeedResponse, ApiSearchResult } from 'src/types'
 import styled from '@emotion/styled'
 import FeedItem from './FeedItem'
 
-const Feed = (): React.ReactElement => {
+const Feed: React.FC = () => {
   const { feedId } = useParams<{ feedId: string }>()
 
   const [collection, setCollection] = React.useState<ApiSearchResult | null>(null)
@@ -14,7 +14,7 @@ const Feed = (): React.ReactElement => {
 
   React.useEffect(() => {
     const fetch = async () => {
-      const lookupResults = await fetchCollectionById({ id: +feedId })
+      const lookupResults = await fetchCollectionById({ id: feedId })
       const collection = lookupResults.results[0]
       setCollection(collection)
 

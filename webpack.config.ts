@@ -49,16 +49,19 @@ const config: Configuration = {
     openPage: `http://localhost:${SERVER_PORT}`,
   },
   plugins: [
-    IS_DEV && new webpack.HotModuleReplacementPlugin(),
-    IS_DEV &&
-      new ReactRefreshWebpackPlugin({
-        overlay: {
-          sockIntegration: 'whm',
-        },
-      }),
+    ...(IS_DEV
+      ? [
+          new webpack.HotModuleReplacementPlugin(),
+          new ReactRefreshWebpackPlugin({
+            overlay: {
+              sockIntegration: 'whm',
+            },
+          }),
+        ]
+      : []),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HTMLWebpackPlugin({ template: path.resolve('src', 'client', 'index.html') }),
-  ],
+  ].filter(Boolean),
 }
 
 export default config

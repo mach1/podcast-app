@@ -5,7 +5,7 @@ import { PlayArrow } from '@material-ui/icons'
 import styled from '@emotion/styled'
 
 type Props = {
-  collection: ApiSearchResult
+  collection: ApiSearchResult | null
   item: PodcastEpisode
 }
 
@@ -15,6 +15,8 @@ const FeedItem: React.FC<Props> = ({ item, collection }) => {
   const onClickPlay = () => {
     console.log('play')
   }
+
+  if (!collection) return null
 
   return (
     <React.Fragment>

@@ -5,7 +5,6 @@ import webpackConfig from '../../webpack.config'
 import webpackDevMiddleware from 'webpack-dev-middleware'
 import webpackHotMiddleware from 'webpack-hot-middleware'
 import webpack from 'webpack'
-import { getSearchString } from '../utils'
 import xml2js from 'xml2js'
 import { RawFeedResponse, ApiFeedResponse } from '../types'
 
@@ -20,7 +19,7 @@ const compiler = webpack(webpackConfig)
 app.set('view engine', 'ejs')
 
 app.get('/search', async (req, res) => {
-  const result = await fetch(`https://itunes.apple.com/search?${getSearchString(req.query)}`)
+  const result = await fetch(`https://itunes.apple.com/search?term=${req.query.term}&media=${req.query.media}`)
 
   const json = await result.json()
 
@@ -28,6 +27,11 @@ app.get('/search', async (req, res) => {
 })
 
 app.get('/feed', async function (req, res) {
+  if (!req.query || !req.query.feedUrl) {
+    res.status(400).send('No feedUrl provided')
+    return
+  }
+
   const url = req.query.feedUrl.toString()
   const response = await fetch(url)
   const text = await response.text()
@@ -79,7 +83,7 @@ if (config.IS_DEV && webpackConfig.output) {
 }
 
 app.get('/lookup', async function (req, res) {
-  const response = await fetch(`https://itunes.apple.com/lookup?${getSearchString(req.query)}`)
+  const response = await fetch(`https://itunes.apple.com/lookup?id=${req.query.id}`)
   const json = await response.json()
   res.setHeader('Content-Type', 'application/json')
   res.send(json)
