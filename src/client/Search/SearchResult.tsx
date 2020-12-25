@@ -2,7 +2,6 @@ import * as React from 'react'
 import styled from '@emotion/styled'
 import { Card, CardMedia, CardContent, CardActionArea, Typography } from '@material-ui/core'
 import { ApiSearchResult } from '../../types'
-import { fetchFeed } from '../api'
 import { Link } from 'react-router-dom'
 
 interface Props {
@@ -10,13 +9,8 @@ interface Props {
 }
 
 const SearchResult = ({ searchResult }: Props): React.ReactElement => {
-  const onClick = async () => {
-    const response = await fetchFeed({ feedUrl: searchResult.feedUrl })
-    console.log(response)
-  }
-
   return (
-    <EnhancedCard onClick={onClick}>
+    <EnhancedCard>
       <EnhancedCardMedia image={searchResult.artworkUrl100} />
       <CardActionArea>
         <Link to={`/feed/${searchResult.collectionId}`}>
