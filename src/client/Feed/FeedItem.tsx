@@ -11,11 +11,11 @@ type Props = {
 }
 
 const FeedItem: React.FC<Props> = ({ item, collection }) => {
-  const { setMedia } = useMedia()
+  const { setPodcastEpisode } = useMedia()
   const { data } = item
   const description = data.description.replace(/<(.|\n)*?>/g, '')
   const onClickPlay = () => {
-    setMedia(item)
+    setPodcastEpisode(item)
   }
 
   if (!collection) return null

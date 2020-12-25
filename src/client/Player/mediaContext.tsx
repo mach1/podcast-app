@@ -1,12 +1,15 @@
 import * as React from 'react'
 import { PodcastEpisode } from '../../types'
+import { debounce } from 'lodash'
 
 interface ContextType {
-  media: PodcastEpisode | null
-  setMedia: (value: PodcastEpisode) => void
+  podcastEpisode: PodcastEpisode | null
+  setPodcastEpisode: (value: PodcastEpisode) => void
   audio: HTMLAudioElement | null
-  togglePlaying: () => void
   playing: boolean
+  togglePlaying: () => void
+  volume: number
+  setVolume: (volume: number) => void
 }
 
 const MediaContext = React.createContext<ContextType | null>(null)
@@ -23,14 +26,21 @@ type Props = {
   children: React.ReactNode
 }
 const MediaProvider: React.FC<Props> = ({ children }) => {
-  const [media, setMedia] = React.useState<PodcastEpisode | null>(null)
-  const [audio, setAudio] = React.useState<HTMLAudioElement | null>(null)
-  const [playing, setPlaying] = React.useState<boolean>(false)
+  const [podcastEpisode, setPodcastEpisodeState] = React.useState<PodcastEpisode | null>(null)
+  const [audio, setAudioState] = React.useState<HTMLAudioElement | null>(null)
+  const [playing, setPlayingState] = React.useState<boolean>(false)
+  const [volume, setVolumeState] = React.useState(30)
 
-  const set = (episode: PodcastEpisode) => {
-    setMedia(episode)
+  const setPodcastEpisode = (episode: PodcastEpisode) => {
+    setPodcastEpisodeState(episode)
+    if (audio) {
+      audio.pause()
+      audio.src = ''
+      audio.load()
+    }
     const newAudio = new Audio(episode.data.enclosure.url)
-    setAudio(newAudio)
+    newAudio.volume = volume / 100
+    setAudioState(newAudio)
   }
 
   const togglePlaying = () => {
@@ -38,15 +48,24 @@ const MediaProvider: React.FC<Props> = ({ children }) => {
 
     if (audio.paused) {
       audio.play()
-      setPlaying(true)
+      setPlayingState(true)
     } else {
       audio.pause()
-      setPlaying(false)
+      setPlayingState(false)
     }
   }
 
+  const setVolume = debounce((newVolume: number) => {
+    setVolumeState(newVolume)
+    if (audio) {
+      audio.volume = newVolume / 100
+    }
+  }, 50)
+
   return (
-    <MediaContext.Provider value={{ audio, media, setMedia: set, togglePlaying, playing }}>
+    <MediaContext.Provider
+      value={{ podcastEpisode, setPodcastEpisode, audio, playing, togglePlaying, volume, setVolume }}
+    >
       {children}
     </MediaContext.Provider>
   )

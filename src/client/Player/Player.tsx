@@ -1,20 +1,28 @@
 import * as React from 'react'
-import { AppBar, IconButton, Typography, Avatar } from '@material-ui/core'
-import { PlayArrow, Pause } from '@material-ui/icons'
+import { AppBar, IconButton, Typography, Avatar, Grid, Slider } from '@material-ui/core'
+import { PlayArrow, Pause, VolumeDown, VolumeUp } from '@material-ui/icons'
 import styled from '@emotion/styled'
 import { useMedia } from './mediaContext'
+import { isArray } from 'lodash'
 
 const Player: React.FC = () => {
-  const { media, audio, togglePlaying, playing } = useMedia()
+  const { podcastEpisode, playing, togglePlaying, audio, volume, setVolume } = useMedia()
+  const [sliderValue, setSliderValue] = React.useState(volume)
 
-  if (!media || !audio) return null
+  if (!podcastEpisode || !audio) return null
+
+  const onChangeVolume = (event: React.ChangeEvent<unknown>, value: number | number[]) => {
+    const newVolume = isArray(value) ? value[0] : value
+    setSliderValue(newVolume)
+    setVolume(newVolume)
+  }
 
   return (
     <EnhancedAppBar color='default'>
       <LeftContent>
-        <Avatar variant='square' src={media.meta.image} />
+        <Avatar variant='square' src={podcastEpisode.meta.image} />
         <TextContainer>
-          <Typography variant='body2'>{media.data.title}</Typography>
+          <Typography variant='body2'>{podcastEpisode.data.title}</Typography>
         </TextContainer>
       </LeftContent>
       <CenterContent>
@@ -23,7 +31,17 @@ const Player: React.FC = () => {
         </EnhancedIconButton>
       </CenterContent>
       <RightContent>
-        <div />
+        <VolumeControls container spacing={2}>
+          <Grid item>
+            <VolumeDown />
+          </Grid>
+          <Grid item xs>
+            <Slider value={sliderValue} onChange={onChangeVolume} aria-labelledby='continuous-slider' />
+          </Grid>
+          <Grid item>
+            <VolumeUp />
+          </Grid>
+        </VolumeControls>
       </RightContent>
     </EnhancedAppBar>
   )
@@ -44,7 +62,11 @@ const CenterContent = styled.div`
   justify-content: center;
 `
 
-const RightContent = styled.div``
+const RightContent = styled.div`
+  justify-content: flex-end;
+  display: flex;
+  padding-right: 20px;
+`
 
 const EnhancedPlayArrow = styled(PlayArrow)`
   width: 20px;
@@ -73,6 +95,10 @@ const EnhancedAppBar = styled(AppBar)`
   > * {
     flex: 1 1 0;
   }
+`
+
+const VolumeControls = styled(Grid)`
+  max-width: 300px;
 `
 
 export default Player
