@@ -1,7 +1,7 @@
 import { debounce } from 'lodash'
 import * as React from 'react'
 import { AppBar, IconButton, Typography, Avatar, Grid, Slider } from '@material-ui/core'
-import { PlayArrow, Pause, VolumeDown, VolumeUp } from '@material-ui/icons'
+import { PlayArrow, Pause, VolumeDown, VolumeUp, Forward30, Replay30 } from '@material-ui/icons'
 import styled from '@emotion/styled'
 import { useMedia } from './mediaContext'
 import { isArray } from 'lodash'
@@ -27,6 +27,18 @@ const Player: React.FC = () => {
     setCurrentTime(newCurrentTime)
   }
 
+  const onClickReplay = () => {
+    const newCurrentTime = audio.currentTime - 30
+    audio.currentTime = newCurrentTime
+    setTimeSliderValue(newCurrentTime)
+  }
+
+  const onClickForward = () => {
+    const newCurrentTime = audio.currentTime + 30
+    audio.currentTime = newCurrentTime
+    setTimeSliderValue(newCurrentTime)
+  }
+
   return (
     <BottomAppBar color='default'>
       <EnhancedSlider value={timeSliderValue} max={duration} onChange={onChangeCurrentTime} />
@@ -38,8 +50,14 @@ const Player: React.FC = () => {
           </TextContainer>
         </LeftContent>
         <CenterContent>
+          <EnhancedIconButton onClick={onClickReplay}>
+            <Replay30 />
+          </EnhancedIconButton>
           <EnhancedIconButton onClick={togglePlaying}>
             {playing ? <EnhancedPause /> : <EnhancedPlayArrow />}
+          </EnhancedIconButton>
+          <EnhancedIconButton onClick={onClickForward}>
+            <Forward30 />
           </EnhancedIconButton>
         </CenterContent>
         <RightContent>
@@ -100,6 +118,7 @@ const EnhancedIconButton = styled(IconButton)`
   flex-shrink: 0;
   width: 40px;
   height: 40px;
+  margin: 0 10px;
 `
 
 const BottomAppBar = styled(AppBar)`

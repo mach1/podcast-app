@@ -40,7 +40,12 @@ const MediaProvider: React.FC<Props> = ({ children }) => {
     audio.autoplay = true
     audio.addEventListener('play', () => setPlayingState(true))
     audio.addEventListener('pause', () => setPlayingState(false))
-    audio.addEventListener('timeupdate', () => debounce(() => setCurrentTimeState(audio.currentTime), 100))
+    audio.addEventListener(
+      'timeupdate',
+      debounce(() => {
+        setCurrentTimeState(audio.currentTime)
+      }, 1000),
+    )
     audio.addEventListener('durationchange', () => setDurationState(audio.duration))
   }, [])
 
