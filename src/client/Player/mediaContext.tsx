@@ -10,6 +10,8 @@ interface ContextType {
   togglePlaying: () => void
   volume: number
   setVolume: (volume: number) => void
+  currentTime: number
+  duration: number
 }
 
 const MediaContext = React.createContext<ContextType | null>(null)
@@ -27,22 +29,25 @@ type Props = {
 }
 const MediaProvider: React.FC<Props> = ({ children }) => {
   const [podcastEpisode, setPodcastEpisodeState] = React.useState<PodcastEpisode | null>(null)
-  const [audio, setAudioState] = React.useState<HTMLAudioElement | null>(null)
+  const [audio] = React.useState<HTMLAudioElement>(new Audio())
+  const [currentTime, setCurrentTimeState] = React.useState(0)
+  const [duration, setDurationState] = React.useState(0)
   const [playing, setPlayingState] = React.useState<boolean>(false)
   const [volume, setVolumeState] = React.useState(30)
 
+  React.useEffect(() => {
+    audio.volume = 30 / 100
+    audio.autoplay = true
+    audio.addEventListener('play', () => setPlayingState(true))
+    audio.addEventListener('pause', () => setPlayingState(false))
+    audio.addEventListener('timeupdate', () => debounce(() => setCurrentTimeState(audio.currentTime), 100))
+    audio.addEventListener('durationchange', () => setDurationState(audio.duration))
+  }, [])
+
   const setPodcastEpisode = (episode: PodcastEpisode) => {
     setPodcastEpisodeState(episode)
-    if (audio) {
-      audio.pause()
-      audio.src = ''
-      audio.load()
-    }
-    const newAudio = new Audio(episode.data.enclosure.url)
-    newAudio.volume = volume / 100
-    newAudio.autoplay = true
-    setPlayingState(true)
-    setAudioState(newAudio)
+    audio.pause()
+    audio.src = episode.data.enclosure.url
   }
 
   const togglePlaying = () => {
@@ -50,10 +55,8 @@ const MediaProvider: React.FC<Props> = ({ children }) => {
 
     if (audio.paused) {
       audio.play()
-      setPlayingState(true)
     } else {
       audio.pause()
-      setPlayingState(false)
     }
   }
 
@@ -66,7 +69,17 @@ const MediaProvider: React.FC<Props> = ({ children }) => {
 
   return (
     <MediaContext.Provider
-      value={{ podcastEpisode, setPodcastEpisode, audio, playing, togglePlaying, volume, setVolume }}
+      value={{
+        podcastEpisode,
+        setPodcastEpisode,
+        audio,
+        playing,
+        togglePlaying,
+        volume,
+        setVolume,
+        currentTime,
+        duration,
+      }}
     >
       {children}
     </MediaContext.Provider>
