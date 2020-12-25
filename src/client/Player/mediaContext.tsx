@@ -40,6 +40,8 @@ const MediaProvider: React.FC<Props> = ({ children }) => {
     }
     const newAudio = new Audio(episode.data.enclosure.url)
     newAudio.volume = volume / 100
+    newAudio.autoplay = true
+    setPlayingState(true)
     setAudioState(newAudio)
   }
 
