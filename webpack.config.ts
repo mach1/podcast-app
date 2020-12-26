@@ -45,20 +45,16 @@ const config: Configuration = {
   devServer: {
     port: WEBPACK_PORT,
     overlay: IS_DEV,
+    hot: true,
     open: IS_DEV,
-    openPage: `http://localhost:${SERVER_PORT}`,
+    openPage: `http://localhost:${WEBPACK_PORT}`,
+    historyApiFallback: true,
+    proxy: {
+      '/api': 'http://localhost:3000',
+    },
   },
   plugins: [
-    ...(IS_DEV
-      ? [
-          new webpack.HotModuleReplacementPlugin(),
-          new ReactRefreshWebpackPlugin({
-            overlay: {
-              sockIntegration: 'whm',
-            },
-          }),
-        ]
-      : []),
+    ...(IS_DEV ? [new webpack.HotModuleReplacementPlugin(), new ReactRefreshWebpackPlugin()] : []),
     new CleanWebpackPlugin({ cleanStaleWebpackAssets: false }),
     new HTMLWebpackPlugin({ template: path.resolve('src', 'client', 'index.html') }),
   ].filter(Boolean),
