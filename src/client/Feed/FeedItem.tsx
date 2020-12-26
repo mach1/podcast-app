@@ -1,7 +1,7 @@
 import moment from 'moment'
 import * as React from 'react'
 import { PodcastEpisode, ApiSearchResult } from '../../types'
-import { ListItem, ListItemText, Typography, Divider, Avatar, ListItemAvatar, IconButton } from '@material-ui/core'
+import { ListItem, ListItemText, Typography, Divider, IconButton } from '@material-ui/core'
 import { PlayArrow } from '@material-ui/icons'
 import styled from '@emotion/styled'
 import { useMedia } from '../Player/mediaContext'
@@ -24,9 +24,6 @@ const FeedItem: React.FC<Props> = ({ item, collection }) => {
   return (
     <React.Fragment>
       <EnhancedListItem button>
-        <ListItemAvatar>
-          <Avatar variant='square' src={collection.artworkUrl100} />
-        </ListItemAvatar>
         <ListItemText
           primary={
             <React.Fragment>

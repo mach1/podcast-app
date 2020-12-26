@@ -1,6 +1,6 @@
 import path from 'path'
 import webpack, { Configuration } from 'webpack'
-import { SERVER_PORT, IS_DEV, WEBPACK_PORT } from './src/server/config'
+import { IS_DEV, WEBPACK_PORT } from './src/server/config'
 import HTMLWebpackPlugin from 'html-webpack-plugin'
 import { CleanWebpackPlugin } from 'clean-webpack-plugin'
 import ReactRefreshWebpackPlugin from '@pmmmwh/react-refresh-webpack-plugin'
