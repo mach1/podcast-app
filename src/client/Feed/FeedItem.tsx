@@ -26,7 +26,14 @@ const FeedItem: React.FC<Props> = ({ item, collection }) => {
         <ListItemAvatar>
           <Avatar variant='square' src={collection.artworkUrl100} />
         </ListItemAvatar>
-        <ListItemText primary={data.title} secondary={<Typography variant='body2'>{description}</Typography>} />
+        <ListItemText
+          primary={data.title}
+          secondary={
+            <DescriptionText paragraph variant='body2'>
+              {description}
+            </DescriptionText>
+          }
+        />
         <EnhancedIconButton onClick={onClickPlay}>
           <EnhancedPlayArrow />
         </EnhancedIconButton>
@@ -52,6 +59,13 @@ const EnhancedIconButton = styled(IconButton)`
   flex-shrink: 0;
   width: 40px;
   height: 40px;
+`
+
+const DescriptionText = styled(Typography)`
+  -webkit-line-clamp: 2;
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
 `
 
 export default FeedItem
