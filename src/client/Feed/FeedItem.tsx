@@ -34,11 +34,7 @@ const FeedItem: React.FC<Props> = ({ item, collection }) => {
               <Typography variant='body1'>{data.title}</Typography>
             </React.Fragment>
           }
-          secondary={
-            <DescriptionText paragraph variant='body2'>
-              {description}
-            </DescriptionText>
-          }
+          secondary={<DescriptionText>{description}</DescriptionText>}
         />
         <EnhancedIconButton onClick={onClickPlay}>
           <EnhancedPlayArrow />
@@ -67,7 +63,7 @@ const EnhancedIconButton = styled(IconButton)`
   height: 40px;
 `
 
-const DescriptionText = styled(Typography)`
+const DescriptionText = styled.span`
   -webkit-line-clamp: 2;
   display: -webkit-box;
   overflow: hidden;
