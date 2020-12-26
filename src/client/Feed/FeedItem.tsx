@@ -1,3 +1,4 @@
+import moment from 'moment'
 import * as React from 'react'
 import { PodcastEpisode, ApiSearchResult } from '../../types'
 import { ListItem, ListItemText, Typography, Divider, Avatar, ListItemAvatar, IconButton } from '@material-ui/core'
@@ -27,7 +28,12 @@ const FeedItem: React.FC<Props> = ({ item, collection }) => {
           <Avatar variant='square' src={collection.artworkUrl100} />
         </ListItemAvatar>
         <ListItemText
-          primary={data.title}
+          primary={
+            <React.Fragment>
+              <Typography variant='caption'>{moment(data.date).format('MMM Do YYYY')}</Typography>
+              <Typography variant='body1'>{data.title}</Typography>
+            </React.Fragment>
+          }
           secondary={
             <DescriptionText paragraph variant='body2'>
               {description}
