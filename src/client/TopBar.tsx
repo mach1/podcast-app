@@ -1,19 +1,29 @@
 import * as React from 'react'
 
+import { useHistory } from 'react-router-dom'
 import { debounce } from 'lodash'
 import { AppBar, Toolbar, InputBase, Typography } from '@material-ui/core'
 import { fade } from '@material-ui/core/styles'
 import { Search as SearchIcon } from '@material-ui/icons'
 import styled from '@emotion/styled'
 import { fetchResults } from './store/search/actions'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { getSearchResults } from './store/search/selectors'
 
 const TopBar = (): React.ReactElement => {
   const dispatch = useDispatch()
+  const history = useHistory()
+  const searchResults = useSelector(getSearchResults)
 
   const onSearchChange = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
     dispatch(fetchResults(event.target.value))
   }, 200)
+
+  React.useEffect(() => {
+    if (history.location.pathname !== '/') {
+      history.push('/')
+    }
+  }, [searchResults])
 
   return (
     <AppBarContainer>
