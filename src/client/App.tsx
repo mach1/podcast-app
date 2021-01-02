@@ -1,31 +1,20 @@
-import { debounce } from 'lodash'
 import * as React from 'react'
 import { Container } from '@material-ui/core'
 import { createMuiTheme, ThemeProvider as MuiThemeProvider, StylesProvider } from '@material-ui/core/styles'
 import { ThemeProvider, Global, css } from '@emotion/react'
 import TopBar from './TopBar'
 import SearchResults from './Search/SearchResults'
-import { fetchSearchResults } from './api'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route, useHistory } from 'react-router-dom'
 import Feed from './Feed/Feed'
 import styled from '@emotion/styled'
-import { ApiSearchResult } from 'dist/server/src/types'
 import Player from './Player/Player'
 import { MediaProvider } from './Player/mediaContext'
+import { Provider } from 'react-redux'
+import store from './store'
 
 const theme = createMuiTheme()
 
 export const App: React.FC = () => {
-  const [results, setResults] = React.useState<ApiSearchResult[]>([])
-
-  const onSearchChange = debounce(async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const response = await fetchSearchResults({ term: event.target.value, media: 'podcast' })
-    const {
-      json: { results },
-    } = response
-    setResults(results)
-  }, 1000)
-
   return (
     <MuiThemeProvider theme={theme}>
       <ThemeProvider theme={theme}>
@@ -46,20 +35,22 @@ export const App: React.FC = () => {
               }
             `}
           />
-          <TopBar onSearchChange={onSearchChange} />
           <MediaProvider>
-            <Player />
             <EnhancedContainer>
-              <Router>
-                <Switch>
-                  <Route path='/feed/:feedId'>
-                    <Feed />
-                  </Route>
-                  <Route path='/'>
-                    <SearchResults results={results} />
-                  </Route>
-                </Switch>
-              </Router>
+              <Provider store={store}>
+                <Router>
+                  <TopBar />
+                  <Player />
+                  <Switch>
+                    <Route path='/feed/:feedId'>
+                      <Feed />
+                    </Route>
+                    <Route path='/'>
+                      <SearchResults />
+                    </Route>
+                  </Switch>
+                </Router>
+              </Provider>
             </EnhancedContainer>
           </MediaProvider>
         </StylesProvider>

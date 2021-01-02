@@ -1,15 +1,20 @@
 import * as React from 'react'
 
+import { debounce } from 'lodash'
 import { AppBar, Toolbar, InputBase, Typography } from '@material-ui/core'
 import { fade } from '@material-ui/core/styles'
 import { Search as SearchIcon } from '@material-ui/icons'
 import styled from '@emotion/styled'
+import { fetchResults } from './store/search/actions'
+import { useDispatch } from 'react-redux'
 
-interface Props {
-  onSearchChange: (event: React.ChangeEvent<HTMLInputElement>) => void
-}
+const TopBar = (): React.ReactElement => {
+  const dispatch = useDispatch()
 
-const TopBar = ({ onSearchChange }: Props): React.ReactElement => {
+  const onSearchChange = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
+    dispatch(fetchResults(event.target.value))
+  }, 200)
+
   return (
     <AppBarContainer>
       <AppBar position='fixed' color='primary'>
