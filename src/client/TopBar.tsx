@@ -4,7 +4,7 @@ import { useHistory } from 'react-router-dom'
 import { debounce } from 'lodash'
 import { AppBar, Toolbar, InputBase, Typography } from '@material-ui/core'
 import { fade } from '@material-ui/core/styles'
-import { Search as SearchIcon } from '@material-ui/icons'
+import { Search, Clear } from '@material-ui/icons'
 import styled from '@emotion/styled'
 import { fetchResults } from './store/search/actions'
 import { useDispatch, useSelector } from 'react-redux'
@@ -14,10 +14,24 @@ const TopBar = (): React.ReactElement => {
   const dispatch = useDispatch()
   const history = useHistory()
   const searchResults = useSelector(getSearchResults)
+  const [searchText, setSearchText] = React.useState('')
+  const searchInputRef = React.useRef<HTMLInputElement>(null)
 
-  const onSearchChange = debounce((event: React.ChangeEvent<HTMLInputElement>) => {
-    dispatch(fetchResults(event.target.value))
-  }, 200)
+  const debouncedFetch = React.useMemo(() => debounce(value => dispatch(fetchResults(value)), 500), [])
+
+  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { value } = event.target
+    setSearchText(value)
+    debouncedFetch(value)
+  }
+
+  const onClickClear = () => {
+    setSearchText('')
+    console.log(searchInputRef)
+    if (searchInputRef.current) {
+      searchInputRef.current.focus()
+    }
+  }
 
   React.useEffect(() => {
     if (history.location.pathname !== '/') {
@@ -31,10 +45,14 @@ const TopBar = (): React.ReactElement => {
         <EnhancedToolbar>
           <Title>Podcasts</Title>
           <SearchContainer>
-            <SearchIconContainer>
-              <SearchIcon />
-            </SearchIconContainer>
-            <StyledInput placeholder='Search...' onChange={onSearchChange} />
+            <SearchIcon />
+            <StyledInput
+              inputRef={searchInputRef}
+              value={searchText}
+              placeholder='Search...'
+              onChange={onSearchChange}
+              endAdornment={<ClearIcon onClick={onClickClear} />}
+            />
           </SearchContainer>
         </EnhancedToolbar>
       </AppBar>
@@ -77,16 +95,16 @@ const StyledInput = styled(InputBase)`
       transition: ${theme.transitions.create('width')};
       width: 100%;
       ${theme.breakpoints.up('md')} {
-        width: 12ch;
+        width: 15ch;
         &:focus {
-          width: 20ch;
+          width: 23ch;
         }
       }
     }
   `}
 `
 
-const SearchIconContainer = styled(SearchIcon)`
+const SearchIcon = styled(Search)`
   ${({ theme }) => `
     padding: ${theme.spacing(0, 2)};
     height: 100%;
@@ -95,6 +113,22 @@ const SearchIconContainer = styled(SearchIcon)`
     display: flex;
     alignItems: center;
     justifyContent: center;
+  `}
+`
+
+const ClearIcon = styled(Clear)`
+  ${({ theme }) => `
+    path {
+      color: ${fade(theme.palette.common.white, 0.25)};
+    }
+    padding: ${theme.spacing(0, 1)};
+    height: 100%;
+    position: absolute;
+    right: 0;
+    display: flex;
+    alignItems: center;
+    justifyContent: center;
+    cursor: pointer;
   `}
 `
 
