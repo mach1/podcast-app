@@ -1,0 +1,17 @@
+{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "esModuleInterop": true,
+    "composite": true,
+    "declaration": true,
+    "outDir": "./dist",
+    "rootDir": "./src"
+  },
+  "include": [
+    "src/**/*"
+  ],
+  "references": [
+    { "path": "../types/tsconfig.build.json" },
+    { "path": "../config/tsconfig.build.json"}
+  ]
+}

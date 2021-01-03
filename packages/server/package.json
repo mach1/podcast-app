@@ -1,0 +1,27 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "build": "npm run clean && npm run compile",
+    "clean": "rm -rf ./dist && rm -rf tsconfig.build.tsbuildinfo",
+    "compile": "tsc -b tsconfig.build.json",
+    "dev": "tsc-watch --noClear -b tsconfig.build.json --onSuccess \"node --enable-source-maps index.js\""
+  },
+  "dependencies": {
+    "express": "^4.17.1",
+    "node-fetch": "^2.6.1",
+    "xml2js": "^0.4.23",
+    "@podcast/types": "^1.0.0",
+    "@podcast/config": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.9",
+    "@types/node": "^14.14.19",
+    "@types/node-fetch": "^2.5.7",
+    "@types/xml2js": "^0.4.7",
+    "ts-node": "^9.1.1",
+    "tsc-watch": "^4.2.9"
+  }
+}

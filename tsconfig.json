@@ -1,19 +1,10 @@
 {
+  "extends": "./tsconfig.build.json",
+
   "compilerOptions": {
-    "strict": true,
-    "target": "ES2019",
-    "moduleResolution": "node",
-    "module": "commonjs",      
-    "esModuleInterop": true,
-    "declaration": true,
-    "sourceMap": true,
-    "skipLibCheck": true,
-    "allowSyntheticDefaultImports": true,
-    "isolatedModules": true,
-    "outDir": "../../dist/shared",
-    "lib": ["ES2019", "DOM"],
-    "composite": true,
-    "baseUrl": "./",
-    "jsx": "react",
-  },
+    "baseUrl": "./packages",
+    "paths": {
+      "@podcast/*": ["*/src"]
+    }
+  }
 }
