@@ -1,7 +1,7 @@
 {
-  "name": "client",
+  "name": "@podcast/client",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index",
   "license": "MIT",
   "scripts": {
     "build": "cross-env NODE_ENV=production TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack -p",

@@ -5,8 +5,8 @@
   "main": "index.js",
   "scripts": {
     "lint": "eslint 'packages/**/*.{ts,tsx}'",
-    "build-client": "yarn workspace client build",
-    "build-server": "yarn workspace server build",
+    "build-client": "yarn workspace @podcast/client build",
+    "build-server": "yarn workspace @podcast/server build",
     "build": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run build-server\" \"npm run build-client\"",
     "dev-client": "yarn workspace client dev",
     "dev-server": "yarn workspace server dev",
