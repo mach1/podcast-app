@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "lint": "eslint 'src/**/*.{ts,tsx}'",
+    "lint": "eslint 'packages/**/*.{ts,tsx}'",
     "build-client": "yarn workspace client build",
     "build-server": "yarn workspace server build",
     "build": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run build-server\" \"npm run build-client\"",
