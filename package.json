@@ -8,6 +8,7 @@
     "build-client": "yarn workspace @podcast/client build",
     "build-server": "yarn workspace @podcast/server build",
     "build": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run build-server\" \"npm run build-client\"",
+    "copy": "rm -rf dist && mkdir dist && mkdir dist/public && cp packages/server/dist/main.js dist && cp packages/client/dist/index.bundle.js packages/client/dist/index.html dist/public",
     "dev-client": "yarn workspace client dev",
     "dev-server": "yarn workspace server dev",
     "dev": "concurrently --prefix \"[{name}]\" --names \"SERVER,CLIENT\" -c \"bgBlue.bold,bgGreen.bold\" \"npm run dev-server\" \"npm run dev-client\""

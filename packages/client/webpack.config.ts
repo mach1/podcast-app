@@ -18,7 +18,7 @@ const config: Configuration = {
   },
   output: {
     filename: `[name].bundle.js`,
-    path: path.join(__dirname, 'dist', 'statics'),
+    path: path.join(__dirname, 'dist'),
     publicPath: '/',
   },
   resolve: {

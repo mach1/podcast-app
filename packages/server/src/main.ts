@@ -1,3 +1,4 @@
+import path from 'path'
 import express from 'express'
 import fetch from 'node-fetch'
 import * as config from '@podcast/config'
@@ -10,6 +11,8 @@ console.log(`config: ${JSON.stringify(config, null, 2)}`)
 console.log(`*******************************************`)
 
 const app = express()
+
+app.use('/', express.static(path.join(__dirname, 'public')))
 
 app.get('/api/search', async (req, res) => {
   const result = await fetch(`https://itunes.apple.com/search?term=${req.query.term}&media=${req.query.media}`)
