@@ -76,7 +76,6 @@ const SearchContainer = styled.div`
     &:hover {
       background-color: ${fade(theme.palette.common.white, 0.25)};
     }
-    margin-right: ${theme.spacing(2)}px;
     margin-left: 0;
     width: 100%;
     ${theme.breakpoints.up('sm')} {
@@ -87,6 +86,8 @@ const SearchContainer = styled.div`
 `
 
 const StyledInput = styled(InputBase)`
+  width: 100%;
+
   ${({ theme }) => `
     input {
       color: inherit;

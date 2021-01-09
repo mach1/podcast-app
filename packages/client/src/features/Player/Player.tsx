@@ -1,12 +1,16 @@
 import { debounce } from 'lodash'
 import * as React from 'react'
-import { AppBar, IconButton, Typography, Avatar, Grid, Slider } from '@material-ui/core'
+import { AppBar, IconButton, Typography, Avatar, Grid, Slider, withWidth, isWidthDown } from '@material-ui/core'
 import { PlayArrow, Pause, VolumeDown, VolumeUp, Forward30, Replay30 } from '@material-ui/icons'
 import styled from '@emotion/styled'
 import { useMedia } from './mediaContext'
 import { isArray } from 'lodash'
 
-const Player: React.FC = () => {
+type Props = {
+  width: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
+}
+
+const Player: React.FC<Props> = ({ width }) => {
   const { podcastEpisode, playing, togglePlaying, audio, volume, setVolume, duration, currentTime } = useMedia()
   const [sliderValue, setSliderValue] = React.useState(volume)
   const [timeSliderValue, setTimeSliderValue] = React.useState(currentTime)
@@ -39,15 +43,19 @@ const Player: React.FC = () => {
     setTimeSliderValue(newCurrentTime)
   }
 
+  const isMobile = isWidthDown('sm', width)
+
   return (
     <BottomAppBar color='default'>
       <EnhancedSlider value={timeSliderValue} max={duration} onChange={onChangeCurrentTime} />
       <Container>
         <LeftContent>
           <Avatar variant='square' src={podcastEpisode.meta.image} />
-          <TextContainer>
-            <Typography variant='body2'>{podcastEpisode.data.title}</Typography>
-          </TextContainer>
+          {!isMobile && (
+            <TextContainer>
+              <Typography variant='body2'>{podcastEpisode.data.title}</Typography>
+            </TextContainer>
+          )}
         </LeftContent>
         <CenterContent>
           <EnhancedIconButton onClick={onClickReplay}>
@@ -61,17 +69,19 @@ const Player: React.FC = () => {
           </EnhancedIconButton>
         </CenterContent>
         <RightContent>
-          <VolumeControls container spacing={2}>
-            <Grid item>
-              <VolumeDown />
-            </Grid>
-            <Grid item xs>
-              <Slider value={sliderValue} onChange={onChangeVolume} aria-labelledby='continuous-slider' />
-            </Grid>
-            <Grid item>
-              <VolumeUp />
-            </Grid>
-          </VolumeControls>
+          {!isMobile && (
+            <VolumeControls container spacing={2}>
+              <Grid item>
+                <VolumeDown />
+              </Grid>
+              <Grid item xs>
+                <Slider value={sliderValue} onChange={onChangeVolume} aria-labelledby='continuous-slider' />
+              </Grid>
+              <Grid item>
+                <VolumeUp />
+              </Grid>
+            </VolumeControls>
+          )}
         </RightContent>
       </Container>
     </BottomAppBar>
@@ -81,12 +91,20 @@ const Player: React.FC = () => {
 const EnhancedSlider = styled(Slider)`
   position: absolute;
   top: -13px;
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    top: -20px;
+  }
 `
 
 const LeftContent = styled.div`
   display: flex;
   align-items: center;
   padding-left: 20px;
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    padding-left: ${({ theme }) => theme.spacing(1)}px;
+  }
 `
 
 const TextContainer = styled.div`
@@ -119,6 +137,10 @@ const EnhancedIconButton = styled(IconButton)`
   width: 40px;
   height: 40px;
   margin: 0 10px;
+
+  ${({ theme }) => theme.breakpoints.down('sm')} {
+    margin: 0;
+  }
 `
 
 const BottomAppBar = styled(AppBar)`
@@ -142,4 +164,4 @@ const VolumeControls = styled(Grid)`
   max-width: 300px;
 `
 
-export default Player
+export default withWidth()(Player)

@@ -33,6 +33,9 @@ export const App: React.FC = () => {
                 color: inherit;
                 text-decoration: inherit;
               }
+              div {
+                box-sizing: border-box;
+              }
             `}
           />
           <MediaProvider>
