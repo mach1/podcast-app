@@ -1,7 +1,7 @@
 import { call, put, takeEvery } from 'redux-saga/effects'
 import { FETCH_RESULTS, FetchResultsAction } from './types'
 import { fetchResultsSuccess } from './actions'
-import { ApiSearchResults } from 'packages/types/src'
+import { ApiSearchResults } from '@podcast/types/src'
 import * as api from '../../api'
 import { SagaIterator } from 'redux-saga'
 

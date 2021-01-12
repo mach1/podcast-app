@@ -1,4 +1,4 @@
-import { ApiSearchResult } from 'packages/types/src'
+import { ApiSearchResult } from '@podcast/types/src'
 import { RootState } from '../../rootReducer'
 
 export function getSearchResults(state: RootState): ApiSearchResult[] {
