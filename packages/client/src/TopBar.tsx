@@ -27,7 +27,6 @@ const TopBar = (): React.ReactElement => {
 
   const onClickClear = () => {
     setSearchText('')
-    console.log(searchInputRef)
     if (searchInputRef.current) {
       searchInputRef.current.focus()
     }
