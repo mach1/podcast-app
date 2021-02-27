@@ -3,7 +3,42 @@ import express from 'express'
 import fetch from 'node-fetch'
 import * as config from '@podcast/config'
 import xml2js from 'xml2js'
-import { RawFeedResponse, ApiFeedResponse } from '@podcast/types'
+import { RawFeedResponse, ApiFeedResponse, ApiSearchResults } from '@podcast/types'
+import { ApolloServer, gql } from 'apollo-server'
+
+const typeDefs = gql`
+  type Podcast {
+    title: String
+    author: String
+    image: String
+  }
+
+  type Query {
+    search(term: String!): [Podcast]!
+  }
+`
+
+const resolvers = {
+  Query: {
+    search: async (_, args) => {
+      const result = await fetch(`https://itunes.apple.com/search?term=${args.term}&media=podcast`)
+
+      const { results }: ApiSearchResults = await result.json()
+
+      return results.map(rawResult => ({
+        title: rawResult.trackName,
+        author: rawResult.artistName,
+        image: rawResult.artworkUrl100,
+      }))
+    },
+  },
+}
+
+const server = new ApolloServer({ typeDefs, resolvers })
+
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`)
+})
 
 console.log(`*******************************************`)
 console.log(`NODE_ENV: ${process.env.NODE_ENV}`)

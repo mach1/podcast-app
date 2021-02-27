@@ -134,11 +134,8 @@ export interface ApiSearchResult {
 }
 
 export interface ApiSearchResults {
-  status: string
-  json: {
-    resultCount: number
-    results: ApiSearchResult[]
-  }
+  resultCount: number
+  results: ApiSearchResult[]
 }
 
 export type ApiSearchOptions = {
