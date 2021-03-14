@@ -1,42 +1,27 @@
 import * as React from 'react'
 
-import { useHistory } from 'react-router-dom'
-import { debounce } from 'lodash'
 import { AppBar, Toolbar, InputBase, Typography } from '@material-ui/core'
 import { fade } from '@material-ui/core/styles'
 import { Search, Clear } from '@material-ui/icons'
 import styled from '@emotion/styled'
-import { fetchResults } from './store/search/actions'
-import { useDispatch, useSelector } from 'react-redux'
-import { getSearchResults } from './store/search/selectors'
 
-const TopBar = (): React.ReactElement => {
-  const dispatch = useDispatch()
-  const history = useHistory()
-  const searchResults = useSelector(getSearchResults)
-  const [searchText, setSearchText] = React.useState('')
+interface Props {
+  onSearchChange: (text: string) => void
+}
+const TopBar = ({ onSearchChange }: Props): React.ReactElement => {
   const searchInputRef = React.useRef<HTMLInputElement>(null)
 
-  const debouncedFetch = React.useMemo(() => debounce(value => dispatch(fetchResults(value)), 500), [])
-
-  const onSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const onChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = event.target
-    setSearchText(value)
-    debouncedFetch(value)
+    onSearchChange(value)
   }
 
   const onClickClear = () => {
-    setSearchText('')
+    onSearchChange('')
     if (searchInputRef.current) {
       searchInputRef.current.focus()
     }
   }
-
-  React.useEffect(() => {
-    if (history.location.pathname !== '/') {
-      history.push('/')
-    }
-  }, [searchResults])
 
   return (
     <AppBarContainer>
@@ -47,9 +32,8 @@ const TopBar = (): React.ReactElement => {
             <SearchIcon />
             <StyledInput
               inputRef={searchInputRef}
-              value={searchText}
               placeholder='Search...'
-              onChange={onSearchChange}
+              onChange={onChange}
               endAdornment={<ClearIcon onClick={onClickClear} />}
             />
           </SearchContainer>

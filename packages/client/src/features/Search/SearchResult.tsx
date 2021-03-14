@@ -1,11 +1,11 @@
 import * as React from 'react'
 import styled from '@emotion/styled'
 import { Card, CardMedia, CardContent, CardActionArea, Typography, withWidth, isWidthDown } from '@material-ui/core'
-import { ApiSearchResult } from '@podcast/types'
 import { Link } from 'react-router-dom'
+import { SearchResult as SearchResultType } from '../../data/search/query'
 
 interface Props {
-  searchResult: ApiSearchResult
+  searchResult: SearchResultType
   width: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
@@ -14,13 +14,13 @@ const SearchResult = ({ searchResult, width }: Props): React.ReactElement => {
 
   return (
     <EnhancedCard>
-      <EnhancedCardMedia image={searchResult.artworkUrl100} />
+      <EnhancedCardMedia image={searchResult.image} />
       <EnhancedCardActionArea>
-        <Link to={`/feed/${searchResult.collectionId}`}>
+        <Link to={`/feed/${searchResult.id}`}>
           <ContentContainer>
             <EnhancedCardContent>
-              <Title variant={isMobile ? 'subtitle1' : 'h5'}>{searchResult.collectionName}</Title>
-              <Author variant={isMobile ? 'body2' : 'subtitle1'}>{searchResult.artistName}</Author>
+              <Title variant={isMobile ? 'subtitle1' : 'h5'}>{searchResult.title}</Title>
+              <Author variant={isMobile ? 'body2' : 'subtitle1'}>{searchResult.author}</Author>
             </EnhancedCardContent>
           </ContentContainer>
         </Link>

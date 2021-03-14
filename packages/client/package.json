@@ -8,6 +8,7 @@
     "dev": "cross-env TS_NODE_PROJECT=\"tsconfig-for-webpack-config.json\" webpack-dev-server -w"
   },
   "dependencies": {
+    "@apollo/client": "^3.3.11",
     "@emotion/react": "^11.1.4",
     "@emotion/styled": "^11.0.0",
     "@material-ui/core": "^4.11.2",
@@ -16,6 +17,7 @@
     "@podcast/types": "^1.0.0",
     "@types/lodash": "^4.14.167",
     "core-js": "^3.8.2",
+    "graphql": "^15.5.0",
     "lodash": "^4.17.20",
     "moment": "^2.29.1",
     "react": "^17.0.1",

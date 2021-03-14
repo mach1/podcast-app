@@ -8,6 +8,7 @@ import { ApolloServer, gql } from 'apollo-server'
 
 const typeDefs = gql`
   type Podcast {
+    id: ID
     title: String
     author: String
     image: String
@@ -26,6 +27,7 @@ const resolvers = {
       const { results }: ApiSearchResults = await result.json()
 
       return results.map(rawResult => ({
+        id: rawResult.collectionId,
         title: rawResult.trackName,
         author: rawResult.artistName,
         image: rawResult.artworkUrl100,
