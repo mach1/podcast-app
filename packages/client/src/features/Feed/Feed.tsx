@@ -1,54 +1,41 @@
 import * as React from 'react'
 import { useParams } from 'react-router-dom'
-import { fetchCollectionById, fetchFeed } from '../../api'
 import { List, ListSubheader, Box, Typography, Avatar, Grid, withWidth, isWidthDown } from '@material-ui/core'
-import { ApiFeedResponse, ApiSearchResult } from '@podcast/types'
-import { css, useTheme } from '@emotion/react'
+import { css } from '@emotion/react'
 import styled from '@emotion/styled'
 import FeedItem from './FeedItem'
+import { GetByIdData, GetByIdVars, GET_PODCAST_BY_ID } from '../../data/search/query'
+import { useQuery } from '@apollo/client'
 
 type Props = {
   width: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
 }
 
 const Feed: React.FC<Props> = ({ width }) => {
-  const theme = useTheme()
   const { feedId } = useParams<{ feedId: string }>()
 
-  const [collection, setCollection] = React.useState<ApiSearchResult | null>(null)
-  const [feed, setFeed] = React.useState<ApiFeedResponse | null>(null)
+  const { loading, data } = useQuery<GetByIdData, GetByIdVars>(GET_PODCAST_BY_ID, {
+    variables: { id: +feedId },
+  })
 
-  React.useEffect(() => {
-    const fetch = async () => {
-      const lookupResults = await fetchCollectionById({ id: feedId })
-      const collection = lookupResults.results[0]
-      setCollection(collection)
+  if (loading) return null
 
-      if (!collection) return
-
-      const feed = await fetchFeed({ feedUrl: collection.feedUrl })
-      setFeed(feed)
-    }
-
-    fetch()
-  }, [feedId])
-
-  if (!feed) return null
+  const { getPodcastById: podcast } = data
 
   const isMobile = isWidthDown('sm', width)
 
   const title = (
     <React.Fragment>
-      <Typography variant={isMobile ? 'body1' : 'h5'}>{feed.meta.title}</Typography>
+      <Typography variant={isMobile ? 'body1' : 'h5'}>{podcast.title}</Typography>
       <Typography color='textSecondary' paragraph variant={isMobile ? 'body2' : 'body1'}>
-        {feed.meta.author}
+        {podcast.author}
       </Typography>
     </React.Fragment>
   )
 
   const description = (
     <Typography paragraph variant='body2'>
-      {feed.meta.description}
+      {podcast.feed.description}
     </Typography>
   )
 
@@ -59,7 +46,7 @@ const Feed: React.FC<Props> = ({ width }) => {
           <PaddedContainer>
             <PodcastContainer container>
               <Grid item md={2} xs={3}>
-                <PodcastImage variant='square' src={feed.meta.image} />
+                <PodcastImage variant='square' src={podcast.image} />
               </Grid>
               <PodcastDetails item md={10} xs={9}>
                 {title}
@@ -71,7 +58,7 @@ const Feed: React.FC<Props> = ({ width }) => {
           <PaddedContainer>
             <PodcastContainer container>
               <Grid item md={2} xs={3}>
-                <PodcastImage variant='square' src={feed.meta.image} />
+                <PodcastImage variant='square' src={podcast.image} />
               </Grid>
               <PodcastDetails item md={10} xs={9}>
                 {title}
@@ -82,8 +69,8 @@ const Feed: React.FC<Props> = ({ width }) => {
         )}
       </Box>
       <EnhancedList subheader={<EpisodesSubHeader>Episodes</EpisodesSubHeader>}>
-        {feed.items.map((feedItem, i) => {
-          return <FeedItem key={i} collection={collection} item={{ meta: feed.meta, data: feedItem }} />
+        {podcast.feed.episodes.map((episode, i) => {
+          return <FeedItem key={i} podcast={podcast} episode={episode} />
         })}
       </EnhancedList>
     </React.Fragment>

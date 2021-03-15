@@ -1,10 +1,10 @@
 import * as React from 'react'
-import { PodcastEpisode } from '@podcast/types'
 import { debounce } from 'lodash'
+import { SearchResult as Podcast, Episode } from '../../data/search/query'
 
 interface ContextType {
-  podcastEpisode: PodcastEpisode | null
-  setPodcastEpisode: (value: PodcastEpisode) => void
+  podcastEpisode: Episode | null
+  setPodcastEpisode: (value: Episode) => void
   audio: HTMLAudioElement | null
   playing: boolean
   togglePlaying: () => void
@@ -28,7 +28,7 @@ type Props = {
   children: React.ReactNode
 }
 const MediaProvider: React.FC<Props> = ({ children }) => {
-  const [podcastEpisode, setPodcastEpisodeState] = React.useState<PodcastEpisode | null>(null)
+  const [podcastEpisode, setPodcastEpisodeState] = React.useState<Episode | null>(null)
   const [audio] = React.useState<HTMLAudioElement>(new Audio())
   const [currentTime, setCurrentTimeState] = React.useState(0)
   const [duration, setDurationState] = React.useState(0)
@@ -49,10 +49,10 @@ const MediaProvider: React.FC<Props> = ({ children }) => {
     audio.addEventListener('durationchange', () => setDurationState(audio.duration))
   }, [])
 
-  const setPodcastEpisode = (episode: PodcastEpisode) => {
+  const setPodcastEpisode = (episode: Episode) => {
     setPodcastEpisodeState(episode)
     audio.pause()
-    audio.src = episode.data.enclosure.url
+    audio.src = episode.url
   }
 
   const togglePlaying = () => {

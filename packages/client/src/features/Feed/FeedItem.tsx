@@ -1,25 +1,24 @@
 import moment from 'moment'
 import * as React from 'react'
-import { PodcastEpisode, ApiSearchResult } from '@podcast/types'
 import { ListItem, ListItemText, Typography, Divider, IconButton } from '@material-ui/core'
 import { PlayArrow } from '@material-ui/icons'
 import styled from '@emotion/styled'
 import { useMedia } from '../Player/mediaContext'
+import { SearchResult as Podcast, Episode } from '../../data/search/query'
 
 type Props = {
-  collection: ApiSearchResult | null
-  item: PodcastEpisode
+  podcast: Podcast
+  episode: Episode
 }
 
-const FeedItem: React.FC<Props> = ({ item, collection }) => {
+const FeedItem: React.FC<Props> = ({ episode, podcast }) => {
   const { setPodcastEpisode } = useMedia()
-  const { data } = item
-  const description = data.description.replace(/<(.|\n)*?>/g, '')
+  const description = episode.description.replace(/<(.|\n)*?>/g, '')
   const onClickPlay = () => {
-    setPodcastEpisode(item)
+    setPodcastEpisode(episode)
   }
 
-  if (!collection) return null
+  if (!podcast) return null
 
   return (
     <React.Fragment>
@@ -27,8 +26,8 @@ const FeedItem: React.FC<Props> = ({ item, collection }) => {
         <ListItemText
           primary={
             <React.Fragment>
-              <Typography variant='caption'>{moment(data.date).format('MMM Do YYYY')}</Typography>
-              <Typography variant='body1'>{data.title}</Typography>
+              <Typography variant='caption'>{moment(episode.date).format('MMM Do YYYY')}</Typography>
+              <Typography variant='body1'>{episode.title}</Typography>
             </React.Fragment>
           }
           secondary={<DescriptionText>{description}</DescriptionText>}

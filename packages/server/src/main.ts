@@ -8,14 +8,33 @@ import { ApolloServer, gql } from 'apollo-server'
 
 const typeDefs = gql`
   type Podcast {
-    id: ID
-    title: String
-    author: String
-    image: String
+    id: ID!
+    title: String!
+    author: String!
+    image: String!
+    feedUrl: String!
+    feed: Feed
+  }
+
+  type Feed {
+    description: String!
+    episodes: [Episode]!
+  }
+
+  type Episode {
+    image: String!
+    title: String!
+    link: String!
+    description: String!
+    date: String!
+    length: String!
+    type: String!
+    url: String!
   }
 
   type Query {
     search(term: String!): [Podcast]!
+    getPodcastById(id: ID): Podcast
   }
 `
 
@@ -31,7 +50,55 @@ const resolvers = {
         title: rawResult.trackName,
         author: rawResult.artistName,
         image: rawResult.artworkUrl100,
+        feedUrl: rawResult.feedUrl,
       }))
+    },
+    getPodcastById: async (_, args) => {
+      const result = await fetch(`https://itunes.apple.com/lookup?id=${args.id}`)
+
+      const { results }: ApiSearchResults = await result.json()
+
+      if (!results.length) return null
+
+      const rawResult = results[0]
+
+      return {
+        id: rawResult.collectionId,
+        title: rawResult.trackName,
+        author: rawResult.artistName,
+        image: rawResult.artworkUrl100,
+        feedUrl: rawResult.feedUrl,
+      }
+    },
+  },
+  Podcast: {
+    feed: async ({ feedUrl }) => {
+      const response = await fetch(feedUrl)
+      const text = await response.text()
+      const parser = new xml2js.Parser()
+      const feed: RawFeedResponse = await parser.parseStringPromise(text)
+
+      const feedChannel = feed.rss.channel[0]
+      const episodes = feedChannel.item
+        .filter(({ enclosure }) => enclosure)
+        .map(feedItem => {
+          const enclosure = feedItem.enclosure[0]['$']
+          return {
+            image: feedChannel.image[0].url[0],
+            title: feedItem.title[0],
+            link: feedItem.link[0],
+            description: feedItem.description[0],
+            date: feedItem.pubDate[0],
+            length: enclosure.length,
+            type: enclosure.type,
+            url: enclosure.url,
+          }
+        })
+
+      return {
+        description: feed.rss.channel[0].description[0],
+        episodes,
+      }
     },
   },
 }

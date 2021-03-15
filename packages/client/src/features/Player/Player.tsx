@@ -50,10 +50,10 @@ const Player: React.FC<Props> = ({ width }) => {
       <EnhancedSlider value={timeSliderValue} max={duration} onChange={onChangeCurrentTime} />
       <Container>
         <LeftContent>
-          <Avatar variant='square' src={podcastEpisode.meta.image} />
+          <Avatar variant='square' src={podcastEpisode.image} />
           {!isMobile && (
             <TextContainer>
-              <Typography variant='body2'>{podcastEpisode.data.title}</Typography>
+              <Typography variant='body2'>{podcastEpisode.title}</Typography>
             </TextContainer>
           )}
         </LeftContent>
